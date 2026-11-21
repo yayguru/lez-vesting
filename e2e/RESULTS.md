@@ -225,7 +225,8 @@ Dev-mode proofs, LEZ v0.4.0-rc3, fresh standalone sequencer and wallet.
 - Render harness: **56/56** screens, no QML warnings. Includes the laptop size (1260x655 app area of a maximized 1366x768 Basecamp), 1024x700, 1280x720 and 440 wide. On every Create step the "Vest tokens" header button and the pinned action bar (Back · Step N of 4 · Continue/Vest) stay on screen.
 - `ui-tests.mjs`: 5/5, including "Vest tokens is a 4-step stepper" and About = `Vesting 0.3.0 (2026-11-21)`.
 - Full `E2E_UI=1` run #5 (port 3092): CLI e2e passed, mini-app UI e2e **10 passed, 0 failed**, `E2E PASSED`. The UI flow is Vest tokens → 1 Who ("My other account") → 2 How much (0.05 LGO) → 3 Schedule (6 months preset) → 4 Review → "Vest 0.05 LGO" → "Vesting created / Where your LGO are now". It then opens "Switch to <recipient>'s view", which shows the recipient detail of the same vesting account (`3NmprqBg…RA1`) with Claim.
-- Run #6 (port 3093, post-review fixes): see below.
+- Run #6 (port 3093, final code): CLI e2e passed, UI e2e 9/10. "Make permanent" hit V021: the transaction was not included within 2 minutes on the heavily loaded box (load average ~8). The same flow passed in runs #5 and #7, and that code is unchanged since #5.
+- Run #7 (port 3094, same code as #6): CLI e2e passed, mini-app UI e2e **10 passed, 0 failed**, `E2E PASSED (dev proofs, LEZ v0.4.0-rc3)`.
 - Packages:
   - `vesting_ui-0.3.0-linux.lgx` (sha256 c1831accaddfc16f…), built with nix.
   - `vesting_ui-0.3.0-windows.lgx` (sha256 2e7ae69dd44974a3…): the same files as variant windows-x86_64, signed "yayguru", `lgx verify` OK. Its layout matches 0.2.0, and the packaged Main.qml is byte-identical to the repo.

@@ -64,7 +64,7 @@ jobs:
           scripts/set-lez-tag.sh "$tag"
       - name: Build, tests, e2e against ${{ steps.lez.outputs.tag }}
         run: |
-          sed -i 's/--locked //' scripts/ci.sh   # the bumped pin rewrites Cargo.lock
+          git diff --quiet Cargo.toml || sed -i 's/--locked //' scripts/ci.sh   # only a bumped pin rewrites Cargo.lock
           scripts/ci.sh
       - uses: actions/upload-artifact@v4
         if: always()

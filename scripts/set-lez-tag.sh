@@ -13,6 +13,9 @@ if [ "${1:-}" = "--check" ]; then
 fi
 [ -n "${1:-}" ] && echo "$1" > LEZ_TAG
 tag=$(cat LEZ_TAG)
+if ! grep 'logos-execution-zone' Cargo.toml | grep -qv "tag = \"$tag\""; then
+  echo "LEZ already pinned to $tag (Cargo.toml and Cargo.lock unchanged)"; exit 0
+fi
 sed -i -E "s#(logos-execution-zone\", tag = \")[^\"]+#\1$tag#" Cargo.toml
 cargo update -p lee -p lee_core -p wallet -p common -p sequencer_service_rpc -p system_accounts -p test_guest_core >/dev/null 2>&1 || cargo generate-lockfile
 echo "LEZ pinned to $tag"

@@ -1,0 +1,745 @@
+{
+  "version": "0.1.0",
+  "name": "rfp017_vesting",
+  "spec": "spel-idl/0.1 on LEZ 0.4.0-rc3 actor model (borsh-encoded vesting_core::Message)",
+  "metadata": {
+    "name": "rfp017_vesting",
+    "version": "0.1.0"
+  },
+  "instruction_type": "vesting_core::Message",
+  "instructions": [
+    {
+      "name": "create",
+      "variant": "Create",
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        },
+        {
+          "name": "creator_native_balance",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        },
+        {
+          "name": "schedule",
+          "writable": true,
+          "signer": false,
+          "init": true,
+          "visibility": [
+            "public"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": "rfp017/vesting/schedule"
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "schedule_native_balance",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "entries",
+          "type": {
+            "vec": {
+              "defined": "CreateEntry"
+            }
+          }
+        }
+      ],
+      "discriminator": [
+        24,
+        30,
+        200,
+        40,
+        5,
+        28,
+        7,
+        119
+      ],
+      "execution": {
+        "public": true,
+        "private_owned": false
+      }
+    },
+    {
+      "name": "claim",
+      "variant": "Claim",
+      "accounts": [
+        {
+          "name": "beneficiary",
+          "writable": false,
+          "signer": true,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        },
+        {
+          "name": "schedule",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": "rfp017/vesting/schedule"
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "schedule_native_balance",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        },
+        {
+          "name": "destination",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public",
+            "private_alias"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "creator",
+          "type": "account_id"
+        },
+        {
+          "name": "id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "now",
+          "type": "u64"
+        },
+        {
+          "name": "to",
+          "type": "account_id"
+        }
+      ],
+      "discriminator": [
+        62,
+        198,
+        214,
+        193,
+        213,
+        159,
+        108,
+        210
+      ],
+      "execution": {
+        "public": true,
+        "private_owned": true
+      }
+    },
+    {
+      "name": "cancel",
+      "variant": "Cancel",
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": false,
+          "signer": true,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        },
+        {
+          "name": "schedule",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": "rfp017/vesting/schedule"
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "schedule_native_balance",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        },
+        {
+          "name": "creator_native_balance",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "now",
+          "type": "u64"
+        }
+      ],
+      "discriminator": [
+        232,
+        219,
+        223,
+        41,
+        219,
+        236,
+        220,
+        190
+      ],
+      "execution": {
+        "public": true,
+        "private_owned": false
+      }
+    },
+    {
+      "name": "signal_milestone",
+      "variant": "SignalMilestone",
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": false,
+          "signer": true,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        },
+        {
+          "name": "schedule",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": "rfp017/vesting/schedule"
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "index",
+          "type": "u8"
+        }
+      ],
+      "discriminator": [
+        178,
+        15,
+        252,
+        234,
+        172,
+        40,
+        179,
+        242
+      ],
+      "execution": {
+        "public": true,
+        "private_owned": false
+      }
+    },
+    {
+      "name": "make_irrevocable",
+      "variant": "MakeIrrevocable",
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": false,
+          "signer": true,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        },
+        {
+          "name": "schedule",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": "rfp017/vesting/schedule"
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ],
+      "discriminator": [
+        200,
+        126,
+        4,
+        28,
+        175,
+        146,
+        95,
+        145
+      ],
+      "execution": {
+        "public": true,
+        "private_owned": false
+      }
+    },
+    {
+      "name": "transfer_beneficiary",
+      "variant": "TransferBeneficiary",
+      "accounts": [
+        {
+          "name": "beneficiary",
+          "writable": false,
+          "signer": true,
+          "init": false,
+          "visibility": [
+            "public"
+          ]
+        },
+        {
+          "name": "schedule",
+          "writable": true,
+          "signer": false,
+          "init": false,
+          "visibility": [
+            "public"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": "rfp017/vesting/schedule"
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "creator",
+          "type": "account_id"
+        },
+        {
+          "name": "id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "new_beneficiary",
+          "type": "account_id"
+        }
+      ],
+      "discriminator": [
+        43,
+        100,
+        158,
+        183,
+        38,
+        120,
+        169,
+        249
+      ],
+      "execution": {
+        "public": true,
+        "private_owned": false
+      }
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Schedule",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "creator",
+            "type": "account_id"
+          },
+          {
+            "name": "id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "beneficiary",
+            "type": "account_id"
+          },
+          {
+            "name": "total",
+            "type": "u128"
+          },
+          {
+            "name": "kind",
+            "type": {
+              "defined": "Kind"
+            }
+          },
+          {
+            "name": "cancelable",
+            "type": "bool"
+          },
+          {
+            "name": "transferable",
+            "type": "bool"
+          },
+          {
+            "name": "claimed",
+            "type": "u128"
+          },
+          {
+            "name": "milestones_done",
+            "type": "u64"
+          },
+          {
+            "name": "cancelled",
+            "type": {
+              "option": {
+                "defined": "Cancelled"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "Kind",
+      "kind": "enum",
+      "variants": [
+        {
+          "name": "Linear",
+          "fields": [
+            {
+              "name": "start",
+              "type": "u64"
+            },
+            {
+              "name": "cliff",
+              "type": "u64"
+            },
+            {
+              "name": "end",
+              "type": "u64"
+            }
+          ]
+        },
+        {
+          "name": "Milestones",
+          "fields": [
+            {
+              "name": "amounts",
+              "type": {
+                "vec": "u128"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Params",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "beneficiary",
+          "type": "account_id"
+        },
+        {
+          "name": "total",
+          "type": "u128"
+        },
+        {
+          "name": "kind",
+          "type": {
+            "defined": "Kind"
+          }
+        },
+        {
+          "name": "cancelable",
+          "type": "bool"
+        },
+        {
+          "name": "transferable",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "CreateEntry",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "params",
+          "type": {
+            "defined": "Params"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cancelled",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "at",
+          "type": "u64"
+        },
+        {
+          "name": "vested",
+          "type": "u128"
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 1,
+      "name": "ZeroTotal",
+      "msg": "V001 total must be > 0"
+    },
+    {
+      "code": 2,
+      "name": "BadTimes",
+      "msg": "V002 require start <= cliff <= end and start < end"
+    },
+    {
+      "code": 3,
+      "name": "BadMilestones",
+      "msg": "V003 1..=64 non-zero milestone amounts summing to total"
+    },
+    {
+      "code": 4,
+      "name": "NotAuthorized",
+      "msg": "V004 caller did not sign"
+    },
+    {
+      "code": 5,
+      "name": "NotOwnProgram",
+      "msg": "V005 schedule ops must come from this program"
+    },
+    {
+      "code": 6,
+      "name": "WrongScheduleAccount",
+      "msg": "V006 schedule PDA does not match (creator, id)"
+    },
+    {
+      "code": 7,
+      "name": "AlreadyInitialized",
+      "msg": "V007 schedule already exists"
+    },
+    {
+      "code": 8,
+      "name": "NotInitialized",
+      "msg": "V008 no such schedule"
+    },
+    {
+      "code": 9,
+      "name": "NotBeneficiary",
+      "msg": "V009 only the beneficiary can do this"
+    },
+    {
+      "code": 10,
+      "name": "NotCreator",
+      "msg": "V010 only the creator can do this"
+    },
+    {
+      "code": 11,
+      "name": "NothingClaimable",
+      "msg": "V011 nothing claimable yet; carries next unlock time"
+    },
+    {
+      "code": 12,
+      "name": "NotCancelable",
+      "msg": "V012 schedule is not cancelable"
+    },
+    {
+      "code": 13,
+      "name": "AlreadyCancelled",
+      "msg": "V013 schedule already cancelled"
+    },
+    {
+      "code": 14,
+      "name": "MilestoneOutOfRange",
+      "msg": "V014 milestone index out of range"
+    },
+    {
+      "code": 15,
+      "name": "MilestoneAlreadySignalled",
+      "msg": "V015 milestone already signalled"
+    },
+    {
+      "code": 16,
+      "name": "NotMilestoneSchedule",
+      "msg": "V016 not a milestone schedule"
+    },
+    {
+      "code": 17,
+      "name": "NotTransferable",
+      "msg": "V017 beneficiary is not transferable"
+    },
+    {
+      "code": 18,
+      "name": "Overflow",
+      "msg": "V018 arithmetic overflow"
+    },
+    {
+      "code": 19,
+      "name": "EmptyBatch",
+      "msg": "V019 empty create batch"
+    }
+  ]
+}

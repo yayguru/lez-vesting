@@ -1,0 +1,23 @@
+{
+  "name": "vesting_module",
+  "display_name": "Vesting (RFP-017 prototype)",
+  "version": "0.3.0",
+  "type": "core",
+  "interface": "universal",
+  "category": "finance",
+  "description": "Privacy-preserving token vesting on LEZ 0.4: create, claim (public or private), cancel, milestones. Wraps the `vesting` CLI and the LEZ wallet.",
+  "author": "OPDE",
+  "main": "vesting_module_plugin",
+  "codegen": {
+    "impl_header": "vesting_module_impl.h",
+    "impl_class": "VestingModuleImpl"
+  },
+  "dependencies": [],
+  "capabilities": [],
+  "include": ["vesting", "vesting.exe"],
+  "nix": {
+    "packages": { "build": [], "runtime": [] },
+    "external_libraries": [],
+    "cmake": { "find_packages": [], "extra_sources": [], "extra_include_dirs": [], "extra_link_libraries": [] }
+  }
+}

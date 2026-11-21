@@ -1,0 +1,19 @@
+{
+  "name": "vesting_ui",
+  "display_name": "Vesting",
+  "version": "0.3.0",
+  "type": "ui_qml",
+  "category": "finance",
+  "description": "Token vesting on LEZ: see what is locked and claimable, claim publicly or privately, create and manage schedules.",
+  "author": "OPDE",
+  "view": "Main.qml",
+  "icon": "src/icons/icon.png",
+  "dependencies": ["vesting_module"],
+  "provides": [],
+  "uses": [],
+  "nix": {
+    "packages": { "build": [], "runtime": [] },
+    "external_libraries": [],
+    "cmake": { "find_packages": [], "extra_sources": [], "extra_include_dirs": [], "extra_link_libraries": [] }
+  }
+}

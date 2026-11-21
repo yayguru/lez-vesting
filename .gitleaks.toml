@@ -1,0 +1,9 @@
+# gitleaks config: default rules, plus an allowlist for public LEZ local-devnet constants
+# (the Bedrock funding *public* key from the LEZ README, used by e2e/run_e2e.sh).
+[extend]
+useDefault = true
+
+[allowlist]
+description = "public LEZ local-devnet constants"
+regexTarget = "line"
+regexes = ['''FUNDING_KEY=[0-9a-f]{64} # public local-devnet Bedrock key''']

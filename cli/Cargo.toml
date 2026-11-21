@@ -1,0 +1,27 @@
+[package]
+name = "vesting_cli"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+
+[[bin]]
+name = "vesting"
+path = "src/main.rs"
+
+[dependencies]
+vesting_core = { path = "../core" }
+vesting_methods = { path = "../methods" }
+wallet.workspace = true
+common.workspace = true
+sequencer_service_rpc = { workspace = true, features = ["client"] }
+system_accounts.workspace = true
+lee.workspace = true
+lee_core = { workspace = true, features = ["host"] }
+borsh = { version = "1.5.7", features = ["derive"] }
+clap = { version = "4", features = ["derive"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+anyhow = "1"
+hex = "0.4"
+rand = "0.8"
+serde_json = "1"
+gag = "1"

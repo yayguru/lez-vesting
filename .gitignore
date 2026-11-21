@@ -1,0 +1,26 @@
+target/
+*.log
+e2e/wallet/
+e2e/seqhome/
+e2e/*.txt
+e2e/*.json
+e2e/vesting.bin
+logos/*/result*
+logos/vesting_module/bin/vesting
+logos/vesting_module/bin/vesting.exe
+.lez/
+e2e/out/
+/target
+logos/vesting_ui/tests/render/out/
+
+# local tooling output
+/result
+/result-*
+*.lgx
+*.png
+!logos/vesting_ui/src/icons/icon.png
+*.jwk
+*.pem
+*.key
+keystore*
+.env

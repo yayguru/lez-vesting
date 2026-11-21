@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *" # daily: notice a new LEZ v0.4.x tag in the `lez-latest` job
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pinned:
+    name: build + tests + e2e (LEZ pinned in LEZ_TAG)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk space (the LEZ + RISC Zero build needs ~30 GB)
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL && df -h /
+      - name: Prerequisites
+        run: scripts/install-deps.sh && echo "$HOME/.risc0/bin" >> "$GITHUB_PATH"
+      - name: LEZ tag
+        id: lez
+        run: echo "tag=$(cat LEZ_TAG)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+            .lez
+          key: pinned-${{ steps.lez.outputs.tag }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+          restore-keys: pinned-${{ steps.lez.outputs.tag }}-
+      - name: Build, unit/on-chain tests, e2e on a standalone sequencer
+        run: scripts/ci.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-pinned
+          path: e2e/out/
+
+  lez-latest:
+    name: canary - newest LEZ v0.4.x tag (non-blocking)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk space
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+      - name: Prerequisites
+        run: scripts/install-deps.sh && echo "$HOME/.risc0/bin" >> "$GITHUB_PATH"
+      - name: Pick the newest v0.4.x tag
+        id: lez
+        run: |
+          tag=$(git ls-remote --tags --refs https://github.com/logos-blockchain/logos-execution-zone 'v0.4.*' \
+                | sed 's#.*refs/tags/##' | sort -V | tail -1)
+          echo "newest v0.4.x: $tag (pinned: $(cat LEZ_TAG))"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          scripts/set-lez-tag.sh "$tag"
+      - name: Build, tests, e2e against ${{ steps.lez.outputs.tag }}
+        run: |
+          sed -i 's/--locked //' scripts/ci.sh   # the bumped pin rewrites Cargo.lock
+          scripts/ci.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-lez-latest
+          path: e2e/out/

@@ -1,0 +1,40 @@
+[workspace]
+resolver = "3"
+members = ["core", "methods", "methods/guest", "tests", "cli"]
+
+[workspace.package]
+license = "MIT OR Apache-2.0"
+edition = "2024"
+
+[workspace.dependencies]
+vesting_core = { path = "core" }
+vesting_methods = { path = "methods" }
+# --- LEZ pin: the tag below is the only LEZ version in the build. Change it with
+# `scripts/set-lez-tag.sh <tag>` (reads/writes LEZ_TAG), never by hand.
+lee = { git = "https://github.com/logos-blockchain/logos-execution-zone", tag = "v0.4.0-rc3" }
+lee_core = { git = "https://github.com/logos-blockchain/logos-execution-zone", tag = "v0.4.0-rc3" }
+test_guest_core = { git = "https://github.com/logos-blockchain/logos-execution-zone", tag = "v0.4.0-rc3" }
+wallet = { git = "https://github.com/logos-blockchain/logos-execution-zone", tag = "v0.4.0-rc3" }
+common = { git = "https://github.com/logos-blockchain/logos-execution-zone", tag = "v0.4.0-rc3" }
+sequencer_service_rpc = { git = "https://github.com/logos-blockchain/logos-execution-zone", tag = "v0.4.0-rc3" }
+system_accounts = { git = "https://github.com/logos-blockchain/logos-execution-zone", tag = "v0.4.0-rc3" }
+# --- end LEZ pin
+risc0-zkvm = { version = "3.0.5", default-features = false, features = ["std"] }
+risc0-build = "3.0.5"
+borsh = { version = "1.5.7", features = ["derive"] }
+serde = { version = "1.0.60", default-features = false, features = ["derive"] }
+
+[patch.crates-io]
+keccak = { git = "https://github.com/logos-blockchain/sponges", rev = "3a56e99771beedf04946eab21a4a62adc2951377" }
+
+[profile.dev]
+debug = "line-tables-only"
+[profile.dev.package.argon2]
+opt-level = 3
+[profile.dev.package.blake2]
+opt-level = 3
+
+# Tests run in the dev profile (LEZ's `test-utils` refuses release builds); optimise the
+# dependencies (the RISC Zero executor) so the guest runs at release speed.
+[profile.dev.package."*"]
+opt-level = 3
